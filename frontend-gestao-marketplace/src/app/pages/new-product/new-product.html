@@ -72,10 +72,13 @@
           </div>
         <!-- Botão Salvar -->
           <div class="flex flex-1 justify-center p-3 rounded-lg bg-[#F24D0D] cursor-pointer active:translate-y-2 duration-200 
-    ease-in-out transition" click="saveProduct()">
+            ease-in-out transition" (click)="saveProduct()">
             <span class="text-white text-sm">Salvar e publicar</span>
           </div>
        </div>
+       @if(successMessage) {
+        <p clss="font-bold text-green-500">{{ successMessage }}</p>
+       }
     </div>
   </div>
 </div>

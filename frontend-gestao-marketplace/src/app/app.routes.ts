@@ -5,11 +5,13 @@ import { NewProduct } from './pages/new-product/new-product';
 import { Products } from './pages/products/products';
 import { Layout } from './pages/layout/layout';
 import { authGuard } from './guards/auth-guard';
+import { loginAuthGuard } from './guards/login-auth-guard';
 
 export const routes: Routes = [
   {
     path: "login",
-    component: Login
+    component: Login,
+    canActivate: [loginAuthGuard]
   },
   {
     path: "",

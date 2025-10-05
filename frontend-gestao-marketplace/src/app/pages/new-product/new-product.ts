@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ProductsService } from '../../services/products';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-new-product',
@@ -8,6 +10,8 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
   styleUrl: './new-product.css'
 })
 export class NewProduct {
+  successMessage: string = '';
+  errorMessage: string = '';
   productImageBase64: string | ArrayBuffer | null = null;
 
   productForm = new FormGroup({
@@ -17,10 +21,33 @@ export class NewProduct {
     category: new FormControl('', [Validators.required])
   })
 
+  private readonly _productsService = inject(ProductsService);
+
 
   saveProduct() {
     console.log(this.productForm.value);
 
+    if(this.productForm.invalid || !this.productImageBase64) return;
+
+    const newProductData = {
+      title: this.productForm.value.title as string,
+      price: this.productForm.value.price as number,
+      description: this.productForm.value.description as string,
+      category: this.productForm.value.category as string,
+      imageBase64: this.productImageBase64.toString()
+    }
+    debugger
+
+    this._productsService.saveProduct(newProductData).pipe(take(1)).subscribe({
+      next: (response) => {
+        console.log(response);
+        this.successMessage = 'Produto salvo com sucesso!';
+        this.errorMessage = '';
+        this.productForm.reset();
+        this.productImageBase64 = null;
+      },
+      error: (err) => { console.log(err) }
+  });
   }
 
   onFileSelected(event: Event) {
