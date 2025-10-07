@@ -27,7 +27,7 @@ export class NewProduct {
   saveProduct() {
     console.log(this.productForm.value);
 
-    if(this.productForm.invalid || !this.productImageBase64) return;
+    if (this.productForm.invalid || !this.productImageBase64) return;
 
     const newProductData = {
       title: this.productForm.value.title as string,
@@ -47,7 +47,7 @@ export class NewProduct {
         this.productImageBase64 = null;
       },
       error: (err) => { console.log(err) }
-  });
+    });
   }
 
   onFileSelected(event: Event) {
